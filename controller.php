@@ -22,8 +22,8 @@
         
         case 'saveFile':
             if (isset($_POST['text']))  {
-                if (isset($_GET['title'])) {
-                    $title = $_GET['title'];
+                if (isset($_GET['file'])) {
+                    $title = basename($_GET['file']);
                 } else {
                     $title = "Markdown Preview";
                 }
