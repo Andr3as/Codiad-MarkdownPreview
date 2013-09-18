@@ -35,6 +35,7 @@
             } else {
                 echo '{"status":"error","message":"Missing parameter!"}';
             }
+            break;
             
         default:
             break;
