@@ -103,7 +103,7 @@
                             codiad.message.warning(result.message);
                             _this.parse("js");
                         } catch (e) {
-                            _this.showResult(result);
+                            _this.showResult(text);
                         }
                     }).fail(function(){
                         codiad.message.error("Github is unreachable!");
