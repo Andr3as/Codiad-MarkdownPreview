@@ -25,21 +25,18 @@
         
         init: function() {
             var _this = this;
-            //Overwrite existing preview
-            $('#context-menu a[onclick="codiad.filemanager.openInBrowser($(\'#context-menu\').attr(\'data-path\'));"]')
-                .attr("onclick", "codiad.MarkdownPreview.showDialog($(\'#context-menu\').attr(\'data-path\'))");
-            amplify.subscribe("active.onOpen", function(path){
-                if (codiad.editor.getActive() !== null) {
-                    var manager = codiad.editor.getActive().commands;
-                    manager.addCommand({
-                        name: 'OpenPreview',
-                        bindKey: "Ctrl-O",
-                        exec: function () {
-                            _this.showDialog(codiad.active.getPath());
-                        }
-                    });
+            //Register preview callbacks
+            amplify.subscribe("helper.onPreview", function(path){
+                var ext = _this.getExtension(path);
+                if (ext == "md" || ext == "markdown") {
+                    _this.showDialog(path);
+                    return false;
                 }
             });
+            //Load helper
+            if (typeof(codiad.PreviewHelper) == 'undefined') {
+                $.getScript(this.path+"previewHelper.js");
+            }
         },
         
         //////////////////////////////////////////////////////////
