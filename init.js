@@ -25,11 +25,24 @@
         
         init: function() {
             var _this = this;
+            //Context callbacks
+            amplify.subscribe("context-menu.onShow", function(obj){
+				var ext = _this.getExtension(obj.path);
+				if (ext == "md" || ext == "markdown") {
+					if (codiad.project.isAbsPath($('#file-manager a[data-type="root"]').attr('data-path'))) {
+						$('#context-menu').append('<hr class="file-only markdown">');
+						$('#context-menu').append('<a class="file-only markdown" onclick="codiad.MarkdownPreview.showDialog($(\'#context-menu\').attr(\'data-path\'), true);"><span class="icon-eye"></span>Preview</a>');
+					}
+				}
+            });
+            amplify.subscribe("context-menu.onHide", function(){
+                $('.markdown').remove();
+            });
             //Register preview callbacks
             amplify.subscribe("helper.onPreview", function(path){
                 var ext = _this.getExtension(path);
                 if (ext == "md" || ext == "markdown") {
-                    _this.showDialog(path);
+                    _this.showDialog(path, false);
                     return false;
                 }
             });
@@ -46,16 +59,17 @@
         //  Parameter:
         //
         //  path - {String} - File path
+        //	isAbsolutePath - {bool} - Has project an absolute path
         //
 		//////////////////////////////////////////////////////////
-        showDialog: function(path) {
+        showDialog: function(path, isAbsolutePath) {
             var ext = this.getExtension(path);
             if (ext == "md" || ext == "markdown") {
                 this.file = path;
                 if (this.default !== "") {
                     this.parse(this.default, false);
                 } else {
-                    codiad.modal.load(400, this.path+"dialog.php?chooseMethod");
+                    codiad.modal.load(400, this.path+"dialog.php?chooseMethod&absolutePath=" + isAbsolutePath.toString());
                 }
             } else {
                 codiad.filemanager.openInBrowser(path);

@@ -10,7 +10,14 @@
     <button onclick="codiad.modal.unload(); return false;">Close</button>
     <button id="preview_github">GitHub</button>
     <button onclick="codiad.MarkdownPreview.parse('js'); return false;">Markdown.js</button>
-    <button onclick="codiad.MarkdownPreview.parse('browser'); return false;">Browser</button>
+    <?php
+        if (!isset($_GET['absolutePath'])) {
+            $_GET['absolutePath'] = "false";
+        }
+        if ($_GET['absolutePath'] == "false") {
+            echo '<button onclick="codiad.MarkdownPreview.parse(\'browser\'); return false;">Browser</button>';
+        }
+    ?>
     <div id="previewSettings">
         <input type="checkbox" id="gfm"> Enable 
         <a href="http://github.github.com/github-flavored-markdown/">GitHub Flavored Markdown</a>
