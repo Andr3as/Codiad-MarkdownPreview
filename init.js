@@ -107,6 +107,8 @@
                                 "text": content
                             };
                         }
+                    } else {
+						_this.defObj.text = content;
                     }
                     $.post("https://api.github.com/markdown", JSON.stringify(_this.defObj),function(text){
                         try {
