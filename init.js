@@ -30,14 +30,14 @@
             self        = this;
             //Context callbacks
             amplify.subscribe("context-menu.onShow", function(obj){
-				var ext = _this.getExtension(obj.path);
-				if (ext == "md" || ext == "markdown") {
-					$('#context-menu').append('<hr class="file-only markdown">');
-					if (codiad.project.isAbsPath($('#file-manager a[data-type="root"]').attr('data-path'))) {
-						$('#context-menu').append('<a class="file-only markdown" onclick="codiad.MarkdownPreview.showPreview($(\'#context-menu\').attr(\'data-path\'), true);"><span class="icon-eye"></span>Preview</a>');
-					}
-					$('#context-menu').append('<a class="file-only markdown" onclick="codiad.MarkdownPreview.generate($(\'#context-menu\').attr(\'data-path\'));"><span class="icon-code"></span>Generate html</a>');
-				}
+                var ext = _this.getExtension(obj.path);
+                if (ext == "md" || ext == "markdown") {
+                    $('#context-menu').append('<hr class="file-only markdown">');
+                    if (codiad.project.isAbsPath($('#file-manager a[data-type="root"]').attr('data-path'))) {
+                        $('#context-menu').append('<a class="file-only markdown" onclick="codiad.MarkdownPreview.showPreview($(\'#context-menu\').attr(\'data-path\'), true);"><span class="icon-eye"></span>Preview</a>');
+                    }
+                    $('#context-menu').append('<a class="file-only markdown" onclick="codiad.MarkdownPreview.generate($(\'#context-menu\').attr(\'data-path\'));"><span class="icon-code"></span>Generate html</a>');
+                }
             });
             amplify.subscribe("context-menu.onHide", function(){
                 $('.markdown').remove();
@@ -63,9 +63,9 @@
         //  Parameter:
         //
         //  path - {String} - File path
-        //	isAbsolutePath - {bool} - Has project an absolute path
+        //    isAbsolutePath - {bool} - Has project an absolute path
         //
-		//////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////
         showPreview: function(path, isAbsolutePath) {
             var ext = this.getExtension(path);
             if (ext == "md" || ext == "markdown") {
@@ -73,7 +73,7 @@
                 if (this.default !== "") {
                     this.parse(this.default, this.showResult, false);
                 } else {
-					this.callback = this.showResult;
+                    this.callback = this.showResult;
                     codiad.modal.load(400, this.path+"dialog.php?chooseMethod&absolutePath=" + isAbsolutePath.toString());
                 }
             } else {
@@ -88,14 +88,14 @@
         //  Parameter:
         //
         //  method  - {String} - Method to parse file
-        //	callback - {Function} - Callback function
+        //    callback - {Function} - Callback function
         //  checkDefault - (Optional) - {Boolean} - Check if it should be sets  adefault
         //
-		//////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////
         parse: function(method, callback, checkDefault) {
             var _this = this;
             if (typeof(callback) != 'function') {
-				callback = this.callback;
+                callback = this.callback;
             }
             if (typeof(checkDefault) == 'undefined') {
                 if ($('#setDefault').attr("checked") == "checked") {
@@ -117,7 +117,7 @@
                             };
                         }
                     } else {
-						_this.defObj.text = content;
+                        _this.defObj.text = content;
                     }
                     $.post("https://api.github.com/markdown", JSON.stringify(_this.defObj),function(text){
                         try {
@@ -151,7 +151,7 @@
         //
         //  content - {String} - Parsed content of the file
         //
-		//////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////
         showResult: function(content) {
             $.post(self.path+"controller.php?action=savePreview&file="+self.file, {"content": content}, function(){
                 markdown=window.open(self.path+"preview.html",'_newtab');
@@ -166,7 +166,7 @@
         //
         //  path - {String} - Path of file
         //
-		//////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////
         generate: function(path) {
             var ext = this.getExtension(path);
             if (ext == "md" || ext == "markdown") {
@@ -174,8 +174,8 @@
                 if (this.default !== "") {
                     this.parse(this.default, this.saveResult, false);
                 } else {
-					this.callback       = this.saveResult;
-					var isAbsolutePath  = codiad.project.isAbsPath($('#file-manager a[data-type="root"]').attr('data-path'));
+                    this.callback       = this.saveResult;
+                    var isAbsolutePath  = codiad.project.isAbsPath($('#file-manager a[data-type="root"]').attr('data-path'));
                     codiad.modal.load(400, this.path+"dialog.php?chooseMethod&absolutePath  =" + isAbsolutePath.toString());
                 }
             } else {
@@ -191,15 +191,15 @@
         //
         //  content - {String} - Parsed content of the file
         //
-		//////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////
         saveResult: function(content) {
-			$.post(self.path + "controller.php?action=saveContent&path=" + self.file, {"content": content}, function(result){
-				result = JSON.parse(result);
-				codiad.message[result.status](result.message);
-				if (result.status == "success") {
+            $.post(self.path + "controller.php?action=saveContent&path=" + self.file, {"content": content}, function(result){
+                result = JSON.parse(result);
+                codiad.message[result.status](result.message);
+                if (result.status == "success") {
                     codiad.filemanager.rescan(self.getDirname(self.file));
-				}
-			});
+                }
+            });
         },
         
         //////////////////////////////////////////////////////////
@@ -210,7 +210,7 @@
         //
         //  path - {String} - File path
         //
-		//////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////
         getExtension: function(path) {
             return path.substring(path.lastIndexOf(".")+1);
         },
@@ -225,7 +225,7 @@
         //
         //  path - {String} - File path
         //
-		//////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////
         getDirname: function(path) {
             return path.replace(/\\/g, '/').replace(/\/[^\/]*\/?$/, '');
         }
