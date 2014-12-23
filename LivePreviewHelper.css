@@ -1,0 +1,12 @@
+.preview {
+    height: 100%;
+    position: absolute;
+    right: 0;
+    width: 50%;
+}
+
+.preview iframe {
+  border-left: 6px solid #474747;
+  height: 100%;
+  width: 100%;
+}

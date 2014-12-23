@@ -3,7 +3,7 @@
 Display a preview of markdown files directly through the filemanager or generate html file out of markdown files.
 
 ###Custom templates
-Modify 'template.html' for your needs, but keep '\_\_CONTENT\_\_'.
+Modify `template.html` for your needs, but keep `__CONTENT__`.
 
 ##Installation
 

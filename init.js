@@ -50,10 +50,44 @@
                     return false;
                 }
             });
-            //Load helper
+
+            amplify.subscribe('helper.onStartLivePreview', function(path){
+                var ext = _this.getExtension(path);
+                if (ext == "md" || ext == "markdown") {
+                    _this.livePreview();
+                    //Weired workaround
+                    setTimeout(function(){
+                        _this.livePreview();
+                    },100);
+                    return false;
+                }
+            });
+            amplify.subscribe('helper.onChangeLivePreview', function(event){
+                var path    = codiad.active.getPath();
+                var ext     = _this.getExtension(path);
+                if (ext == "md" || ext == "markdown") {
+                    _this.livePreview();
+                    return false;
+                }
+            });
+            
+            amplify.subscribe('helper.onLivePreviewInit', function(){
+                codiad.LivePreviewHelper.registerExtension(["md", "markdown"]);
+            });
+            //Load helper and libs
             if (typeof(codiad.PreviewHelper) == 'undefined') {
                 $.getScript(this.path+"previewHelper.js");
             }
+            if (typeof(codiad.LivePreviewHelper) == 'undefined') {
+                $.getScript(this.path+"LivePreviewHelper.js", function(){
+                    codiad.LivePreviewHelper.init(_this.path);
+                });
+            }
+            $.getScript(this.path+"markdown.js");
+            //Load template
+            $.get(this.path+'livePreviewTemplate.html', function(template){
+                _this.livePreviewTemplate = template;
+            });
         },
         
         //////////////////////////////////////////////////////////
@@ -132,10 +166,8 @@
                         _this.parse("js", callback);
                     });
                 } else if (method == "js") {
-                    $.getScript(_this.path+"markdown.js", function(){
-                        var text = markdown.toHTML(content);
-                        callback(text);
-                    });
+                    var text = markdown.toHTML(content);
+                    callback(text);
                 } else {
                     codiad.filemanager.openInBrowser(_this.file);
                 }
@@ -154,7 +186,7 @@
         //////////////////////////////////////////////////////////
         showResult: function(content) {
             $.post(self.path+"controller.php?action=savePreview&file="+self.file, {"content": content}, function(){
-                markdown=window.open(self.path+"preview.html",'_newtab');
+                window.open(self.path+"preview.html",'_newtab');
             });
         },
         
@@ -200,6 +232,21 @@
                     codiad.filemanager.rescan(self.getDirname(self.file));
                 }
             });
+        },
+        
+        //////////////////////////////////////////////////////////
+        //
+        //  Handle live preview
+        //
+        //////////////////////////////////////////////////////////
+        livePreview: function() {
+            var content = codiad.editor.getContent();
+            content     = markdown.toHTML(content);
+            content     = this.livePreviewTemplate
+                                .replace('__content_', content)
+                                .replace('__title__', codiad.active.getPath())
+                                .replace('__PATH__', this.path);
+            codiad.LivePreviewHelper.updateContent(content);
         },
         
         //////////////////////////////////////////////////////////
