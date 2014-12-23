@@ -2,6 +2,9 @@
 
 Display a preview of markdown files directly through the filemanager or generate html file out of markdown files.
 
+#LivePreview
+Just hit 'Ctrl-Shift-O' for a live preview.
+
 ###Custom templates
 Modify `template.html` for your needs, but keep `__CONTENT__`.
 

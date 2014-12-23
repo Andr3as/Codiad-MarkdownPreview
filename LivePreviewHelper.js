@@ -34,7 +34,7 @@ codiad.LivePreviewHelper = {
             if (codiad.editor.getActive() !== null && _this.testPath(path)) {
                 var manager = codiad.editor.getActive().commands;
                 manager.addCommand({
-                    name: 'OpenPreview',
+                    name: 'OpenLivePreview',
                     bindKey: "Ctrl-Shift-O",
                     exec: function () {
                         _this.livePreview();
