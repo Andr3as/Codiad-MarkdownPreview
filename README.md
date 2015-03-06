@@ -5,6 +5,8 @@ Display a preview of markdown files directly through the filemanager or generate
 #LivePreview
 Just hit 'Ctrl-Shift-O' for a live preview.
 
+![LivePreview](http://andrano.de/Plugins/img/markdown_preview_small.jpg "LivePreview")
+
 ###Custom templates
 Modify `template.html` for your needs, but keep `__CONTENT__`.
 
