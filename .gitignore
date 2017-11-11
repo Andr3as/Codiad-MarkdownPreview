@@ -1,2 +1,5 @@
-#Ignore output files
+# Ignore output files
 preview.html
+
+# Ignore test files
+tests/

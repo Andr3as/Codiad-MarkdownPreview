@@ -166,7 +166,7 @@
                         _this.parse("js", callback);
                     });
                 } else if (method == "js") {
-                    var text = markdown.toHTML(content);
+                    var text = markdown.toHTML(content, 'Maruku');
                     callback(text);
                 } else {
                     codiad.filemanager.openInBrowser(_this.file);
@@ -241,7 +241,7 @@
         //////////////////////////////////////////////////////////
         livePreview: function() {
             var content = codiad.editor.getContent();
-            content     = markdown.toHTML(content);
+            content     = markdown.toHTML(content, 'Maruku');
             content     = this.livePreviewTemplate
                                 .replace('__content_', content)
                                 .replace('__title__', codiad.active.getPath())
